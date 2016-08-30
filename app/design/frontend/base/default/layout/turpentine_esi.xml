@@ -32,23 +32,38 @@
         </reference>
 
         <!--
-        A default Magento site includes a logged in user's name in the welcome
-        message and the number of items in the shopping cart so it must be
-        cached per-client.
+            A default Magento site includes a logged in user's name in the welcome
+            message and the number of items in the shopping cart so it must be
+            cached per-client.
         -->
         <reference name="header">
             <action method="setEsiOptions">
                 <params>
                     <access>private</access>
+                    <scope>page</scope>
                     <flush_events>
                         <wishlist_item_save_after/>
                         <wishlist_item_delete_after/>
                         <sales_quote_save_after/>
-			<controller_action_layout_render_before_catalogsearch_result_index />
+                        <controller_action_layout_render_before_catalogsearch_result_index />
                     </flush_events>
                 </params>
             </action>
         </reference>
+
+        <!--
+            Slideshow differs from page to page
+            categories have different slideshows
+        -->
+        <reference name="slideshow">
+            <action method="setEsiOptions">
+                <params>
+                    <access>public</access>
+                    <scope>page</scope>
+                </params>
+            </action>
+        </reference>
+
         <!-- This block is inside of the header block on mage EE, so it could
         be commented out for EE stores for a small performance increase -->
         <reference name="cart_sidebar">
@@ -176,6 +191,7 @@
         -->
         <turpentine_cache_flag value="0"/>
         <!--
+
         <reference name="catalog.compare.list">
             <action method="setEsiOptions">
                 <params>
@@ -188,6 +204,7 @@
                 </params>
             </action>
         </reference>
+
         -->
     </catalog_product_compare_index>
 
@@ -229,22 +246,30 @@
 
     <!-- We cache the checkout cart page on a per-client basis -->
     <checkout_cart_index>
-        <turpentine_cache_flag value="0"/>
-        <!--
+        <!-- 
+        <turpentine_cache_flag value="0"/> 
+        -->
         <reference name="checkout.cart">
             <action method="setEsiOptions">
                 <params>
                     <access>private</access>
+                    <method>esi</method>
                     <flush_events>
                         <sales_quote_save_after/>
                     </flush_events>
+                    <registry_keys>
+                        <referrer_url/>
+                    </registry_keys>
                 </params>
             </action>
         </reference>
-        -->
     </checkout_cart_index>
 
     <!-- We never cache anything in the checkout funnel -->
+    <onestepcheckout_index_index>
+        <turpentine_cache_flag value="0"/>
+    </onestepcheckout_index_index>
+
     <checkout_onepage_index>
         <turpentine_cache_flag value="0"/>
     </checkout_onepage_index>
