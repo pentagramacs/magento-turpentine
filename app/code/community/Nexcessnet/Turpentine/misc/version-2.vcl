@@ -121,6 +121,7 @@ sub vcl_recv {
     {{normalize_encoding}}
     {{normalize_user_agent}}
     {{normalize_host}}
+    {{normalize_device_type}}
 
     # We only deal with GET and HEAD by default
     # we test this here instead of inside the url base regex section
@@ -261,6 +262,9 @@ sub vcl_hash {
         set req.hash += server.ip;
     }
     set req.hash += req.http.Ssl-Offloaded;
+    if (req.http.X-UA-Device) {
+        set req.hash += req.http.X-UA-Device;
+    }
     if (req.http.X-Normalized-User-Agent) {
         set req.hash += req.http.X-Normalized-User-Agent;
     }
@@ -406,6 +410,7 @@ sub vcl_deliver {
         set resp.http.X-Varnish-Esi-Access = req.http.X-Varnish-Esi-Access;
         set resp.http.X-Varnish-Currency = req.http.X-Varnish-Currency;
         set resp.http.X-Varnish-Store = req.http.X-Varnish-Store;
+        set resp.http.X-Varnish-UA-Device = req.http.X-UA-Device;
     } else {
         # remove Varnish fingerprints
         remove resp.http.X-Varnish;

@@ -449,6 +449,16 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </cookie_target>
+                        <device_type translate="label" module="turpentine">
+                            <label>Normalize Device Type</label>
+                            <comment>Simplify the device type by the User-Agent header recieved from clients</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>turpentine/config_select_toggle</source_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </device_type>
                     </fields>
                 </normalization>
                 <ttls translate="label" module="turpentine">

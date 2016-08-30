@@ -130,6 +130,7 @@ sub vcl_recv {
     {{normalize_encoding}}
     {{normalize_user_agent}}
     {{normalize_host}}
+    {{normalize_device_type}}
 
     # check if the request is for part of magento
     if (req.url ~ "{{url_base_regex}}") {
@@ -257,6 +258,9 @@ sub vcl_hash {
         hash_data(server.ip);
     }
     hash_data(req.http.Ssl-Offloaded);
+    if (req.http.X-UA-Device) {
+        hash_data(req.http.X-UA-Device);
+    }
     if (req.http.X-Normalized-User-Agent) {
         hash_data(req.http.X-Normalized-User-Agent);
     }
@@ -412,6 +416,7 @@ sub vcl_deliver {
         set resp.http.X-Varnish-Esi-Access = req.http.X-Varnish-Esi-Access;
         set resp.http.X-Varnish-Currency = req.http.X-Varnish-Currency;
         set resp.http.X-Varnish-Store = req.http.X-Varnish-Store;
+        set resp.http.X-Varnish-UA-Device = req.http.X-UA-Device;
     } else {
         # remove Varnish fingerprints
         unset resp.http.X-Varnish;
